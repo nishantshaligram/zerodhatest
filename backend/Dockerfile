@@ -35,6 +35,5 @@ RUN unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR
 ENV PATH $CHROMEDRIVER_DIR:$PATH
 
 COPY . /backend/
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-# CMD python manage.py runserver 0.0.0.0:8000 && python manage.py crontab add
+# CMD "service cron start && python manage.py crontab add && python manage.py runserver 0.0.0.0:8000"
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

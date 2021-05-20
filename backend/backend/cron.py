@@ -2,7 +2,6 @@ import json
 import os
 import pathlib
 from time import strftime, gmtime
-import urllib.request
 import zipfile
 import redis
 import requests
@@ -13,7 +12,8 @@ import csv
 from django.conf import settings
 
 def my_cron_job():
-
+    with open('log/general.txt','a') as file:
+            file.write('cron is called: %s\n' %strftime("%Y-%m-%d %H:%M:%S", gmtime()) )
     # Connect to our Redis instance
     # comment below line if running project locally
     redis_instance = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, decode_responses=True, db=0)
@@ -29,13 +29,17 @@ def my_cron_job():
 
     # find download link in page
     website_url = "https://www.bseindia.com"
-    chrome_options = webdriver.ChromeOptions()
     # driver = webdriver.Chrome("backend/chromedriver.exe")
-    driver = webdriver.Chrome()
-    driver.get('https://www.bseindia.com/markets/MarketInfo/BhavCopy.aspx')
-    html = driver.page_source
-    driver.close()
-    driver.quit()
+    try:
+        driver = webdriver.Chrome()
+        driver.get('https://www.bseindia.com/markets/MarketInfo/BhavCopy.aspx')
+        html = driver.page_source
+        driver.close()
+        driver.quit()
+    except: 
+        with open('log/chromedriver-log.txt','a') as file:
+            file.write('Error Occured: %s\n' %strftime("%Y-%m-%d %H:%M:%S", gmtime()) )
+
 
     soup = BeautifulSoup(html, 'lxml')
     link = soup.find('a', {'id': 'ContentPlaceHolder1_btnhylZip'})
@@ -47,7 +51,7 @@ def my_cron_job():
     # get zip data from url
     extracted_path = download(zip_url, 'downloaded/' + filename, kind="zip", replace=True)
 
-    extracted_file = extracted_path.split('/')[1]
+    # extracted_file = extracted_path.split('/')[1]
     zipfilename = filename.split('.')[0]
     csvfile = zipfilename.split('_')[0]
     csvfilepath = extracted_path + '/' + csvfile + '.CSV'
@@ -63,6 +67,3 @@ def my_cron_job():
                 line_count += 1
         with open('log/cron-log.txt','a') as file:
             file.write('Bhavcopy Updated: %s\n' %strftime("%Y-%m-%d %H:%M:%S", gmtime()) )
-
-# if __name__ == "__main__":
-#     my_cron_job()
