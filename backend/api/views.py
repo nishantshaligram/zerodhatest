@@ -4,8 +4,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
 # Connect to our Redis instance
-# redis_instance = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, decode_responses=True,  db=0)
-redis_instance = redis.Redis(host="localhost", port="6379", decode_responses=True,  db=0)
+# comment below line if running project locally
+redis_instance = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, decode_responses=True,  db=0)
+# un-comment below line if running project locally
+# redis_instance = redis.Redis(host="localhost", port="6379", decode_responses=True,  db=0)
 
 
 @api_view(['GET'])

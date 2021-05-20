@@ -15,8 +15,10 @@ from django.conf import settings
 def my_cron_job():
 
     # Connect to our Redis instance
-    # redis_instance = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, decode_responses=True, db=0)
-    redis_instance = redis.Redis(host="localhost", port="6379", decode_responses=True, db=0)
+    # comment below line if running project locally
+    redis_instance = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, decode_responses=True, db=0)
+    # un-comment below line if running project locally
+    # redis_instance = redis.Redis(host="localhost", port="6379", decode_responses=True, db=0)
     redis_instance.flushall()
 
     # create necessary directory
@@ -28,7 +30,8 @@ def my_cron_job():
     # find download link in page
     website_url = "https://www.bseindia.com"
     chrome_options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome("backend/chromedriver.exe")
+    # driver = webdriver.Chrome("backend/chromedriver.exe")
+    driver = webdriver.Chrome()
     driver.get('https://www.bseindia.com/markets/MarketInfo/BhavCopy.aspx')
     html = driver.page_source
     driver.close()

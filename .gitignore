@@ -1,6 +1,6 @@
 # Ignore Mac system files
-backend/.idea
-backend/venv/Lib
+*/.idea
+*/venv/*
 
 # frontend
 frontend/.DS_Store
@@ -8,7 +8,7 @@ frontend/node_modules
 frontend/dist
 
 #redis
-redis
+*redis*
 # local env files
 .env.local
 .env.*.local
