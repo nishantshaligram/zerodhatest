@@ -130,8 +130,8 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
-    ('*/1 * * * *', 'backend.cron.my_cron_job'),
-    # ('0 18 * * *', 'backend.cron.my_cron_job')
+    ('*/1 * * * *', 'api.cron.my_cron_job'),
+    # ('0 18 * * *', 'api.cron.my_cron_job')
 ]
 
 REDIS_HOST = 'redis'
